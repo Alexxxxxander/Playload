@@ -49,6 +49,7 @@ namespace Playload.App.UI
             comboBoxSex.Items.Add("FEMALE");
             comboBoxSex.Items.Add("CASTRATED");
             comboBoxSex.Items.Add("STERIALIZED");
+            dateTimePickerBirthday.Text = DateTime.Now.Date.ToString();
 
             var petTypeJsonResponse = JObject.Parse(await petTypeService.GetPetTypesAsync());
             foreach (var petType in petTypeJsonResponse["data"]["petType"])
@@ -119,7 +120,9 @@ namespace Playload.App.UI
             {
                 sex = comboBoxSex.SelectedItem.ToString().ToLower();
             }
-            string? birthday = dateTimePickerBirthday.Text;
+            string? birthday =$"{DateTime.Parse( dateTimePickerBirthday.Text).Year}-" +
+                $"{DateTime.Parse(dateTimePickerBirthday.Text).Month}-" +
+                $"{DateTime.Parse(dateTimePickerBirthday.Text).Day}" ;
 
             if (comboBoxBreed.SelectedIndex > 0)
             {

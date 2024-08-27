@@ -23,8 +23,8 @@ namespace Playload.App
             //добавляются колонки в таблицу
             dataGridViewPets.Columns.Add("id", "#");
             dataGridViewPets.Columns.Add("alias", "Кличка");
-            dataGridViewPets.Columns.Add("breed", "Вид");
-            dataGridViewPets.Columns.Add("type", "Тип");
+            dataGridViewPets.Columns.Add("breed", "Порода");
+            dataGridViewPets.Columns.Add("type", "Вид");
             dataGridViewPets.Columns.Add("sex", "Пол");
             dataGridViewPets.Columns.Add("birthday", "День рождения");
 
@@ -213,6 +213,7 @@ namespace Playload.App
         private void buttonAdd_Click(object sender, EventArgs e)
         {
             AddEditForm addEditForm = new AddEditForm("-1", selectedClientId);
+            addEditForm.FormClosed += FormAddEdit_FormClosed;
             addEditForm.ShowDialog();
         }
 

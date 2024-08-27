@@ -28,7 +28,8 @@ namespace Playload.App.Services
                 type_id = typeId,
                 alias = alias,
                 sex = sex,
-                birthday = birthday
+                birthday = birthday,
+                date_register = DateTime.Now.ToString()
             };
 
             var json = JsonConvert.SerializeObject(petData);
