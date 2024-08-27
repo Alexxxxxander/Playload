@@ -19,6 +19,7 @@ namespace Playload.App.UI
         public AddEditForm(string petId, string ownerId)
         {
             InitializeComponent();
+
             domain = fileService.GetAllDataFromXml().domain;
             petService = new PetService(domain, apiKey);
             petTypeService = new PetTypeService(domain, apiKey);
@@ -37,11 +38,12 @@ namespace Playload.App.UI
                 LoadBasics();
                 LoadPet();
             }
-
+            Cursor = Cursors.Default;
         }
       
         public async void LoadBasics()
         {
+            Cursor = Cursors.WaitCursor;
             comboBoxType.Items.Add(string.Empty);
             comboBoxBreed.Items.Add(string.Empty);
             comboBoxSex.Items.Add(string.Empty);
@@ -60,6 +62,7 @@ namespace Playload.App.UI
 
         public async void LoadPet()
         {
+            Cursor = Cursors.WaitCursor;
             var petJsonResponse = JObject.Parse(await petService.GetPetByIdAsync(_petId));
             var petTypeJsonResponse = JObject.Parse(await petTypeService.GetPetTypesAsync());
             var breedsJsonResponse = JObject.Parse(await breedService.GetAllBreedsFilteredByPetType(

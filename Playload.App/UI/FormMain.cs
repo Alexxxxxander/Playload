@@ -73,6 +73,7 @@ namespace Playload.App
         /// <returns></returns>
         private async Task LoadData()
         {
+            Cursor = Cursors.WaitCursor;
             FileService fileService = new FileService();
 
             string domain = fileService.GetAllDataFromXml().domain;
@@ -96,7 +97,7 @@ namespace Playload.App
                     comboBoxClients.Items.Add(fullName);
                 }
             }
-
+            Cursor = Cursors.Default;
 
         }
 
@@ -106,11 +107,14 @@ namespace Playload.App
         /// <returns></returns>
         private async Task LoadPetsAsync()
         {
+            Cursor = Cursors.WaitCursor;
             try
             {
                 if (comboBoxClients.SelectedItem == null)
+                {
+                    Cursor = Cursors.Default;
                     return;
-
+                }
                 // Получаем выбранное имя пользователя
                 string selectedUser = comboBoxClients.SelectedItem.ToString();
                 if (string.IsNullOrEmpty(selectedUser))
@@ -147,6 +151,7 @@ namespace Playload.App
             {
                 MessageBox.Show($"Ошибка загрузки питомцев: {ex.Message}");
             }
+            Cursor = Cursors.Default;
         }
 
         /// <summary>
@@ -219,12 +224,15 @@ namespace Playload.App
 
         private async void buttonDelete_Click(object sender, EventArgs e)
         {
+            Cursor = Cursors.WaitCursor;
             FileService fileService = new FileService();
 
             string domain = fileService.GetAllDataFromXml().domain;
             string url = $"https://{domain}.vetmanager2.ru";
             PetService petService = new(url, apiKey);
             await petService.DeletePetAsync(selectedPetId.ToString());
+            await LoadPetsAsync();
+            Cursor = Cursors.Default;
         }
     }
 
