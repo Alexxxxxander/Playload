@@ -228,8 +228,7 @@ namespace Playload.App
             FileService fileService = new FileService();
 
             string domain = fileService.GetAllDataFromXml().domain;
-            string url = $"https://{domain}.vetmanager2.ru";
-            PetService petService = new(url, apiKey);
+            PetService petService = new(domain, apiKey);
             await petService.DeletePetAsync(selectedPetId.ToString());
             await LoadPetsAsync();
             Cursor = Cursors.Default;

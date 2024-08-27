@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,8 +19,35 @@ namespace Playload.App.Services
 
         public async Task<string> GetAllBreedsFilteredByPetType(string petTypeId)
         {
-            string endpoint = $"/rest/api/breed?filter=[{{'property':'pet_type_id', 'value':'{petTypeId}'}}]&limit=400";
-            return await GetAsync(endpoint);
+            int offset = 0;
+            int limit = 0;
+
+            string endpoint = $"/rest/api/breed?filter=[{{'property':'pet_type_id', 'value':'{petTypeId}'}}]&limit={limit}&offset={offset}";
+            string response = await GetAsync(endpoint);
+            var allBreeds = JObject.Parse(response);
+
+            limit = 100;
+            int totalCount = int.Parse(allBreeds["data"]["totalCount"].ToString());
+            
+            do
+            {
+                endpoint = $"/rest/api/breed?filter=[{{'property':'pet_type_id', 'value':'{petTypeId}'}}]&limit={limit}&offset={offset}";
+                response = await GetAsync(endpoint);
+                var responseJson = JObject.Parse(response);
+                var breeds = responseJson["data"]["breed"] as JArray;
+
+                if (breeds != null && breeds.Count > 0)
+                {
+                    foreach (var breed in breeds)
+                    {
+                        (allBreeds["data"]["breed"] as JArray).Add(breed);
+                    }
+                }
+                // Увеличиваем offset для следующей страницы
+                offset += limit;
+            }
+            while (offset < totalCount);
+            return allBreeds.ToString();
         }
 
         public async Task<string> GetBreedById(string breedId)

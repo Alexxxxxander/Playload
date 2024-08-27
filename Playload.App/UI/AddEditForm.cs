@@ -89,7 +89,7 @@ namespace Playload.App.UI
 
         private async void comboBoxType_DropDownClosed(object sender, EventArgs e)
         {
-            if ((sender as ComboBox).SelectedItem != string.Empty)
+            if ((sender as ComboBox).SelectedIndex > 0)
             {
                 comboBoxBreed.Items.Clear();
                 comboBoxBreed.Items.Add(string.Empty);
@@ -163,7 +163,6 @@ namespace Playload.App.UI
             }
 
         }
-
 
         private void buttonCancel_Click(object sender, EventArgs e)
         {
